@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="icon" type="image/png" href="assets/image/favicon.ico">
+		<title>iu em</title>    
+        <link type="text/css" rel="stylesheet" href="./renxi/default.css">
+		<script type="text/javascript" src="./renxi/jquery.min.js"></script>
+		<script type="text/javascript" src="./renxi/jscex.min.js"></script>
+		<script type="text/javascript" src="./renxi/jscex-parser.js"></script>
+		<script type="text/javascript" src="./renxi/jscex-jit.js"></script>
+		<script type="text/javascript" src="./renxi/jscex-builderbase.min.js"></script>
+		<script type="text/javascript" src="./renxi/jscex-async.min.js"></script>
+		<script type="text/javascript" src="./renxi/jscex-async-powerpack.min.js"></script>
+		<script type="text/javascript" src="./renxi/functions.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./renxi/love.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="style.css">
+        
+
+</head>
+    <body>
+        <audio autoplay="autoplay" >
+          <source src="assets/music/heartbeat.mp3" type="audio/mp3" />
+        </audio>
+        <div class="body">
+            <p class="love_you">💖 Click vào để bắt đầu 💖</p>
+            <canvas id="lovexf"></canvas> 
+        </div>
+        <div id="main">
+            
+             <div id="wrap">
+                <div id="text">
+			        <div id="code">
+			      <div>
+                        <p class="say">Xin chào cô gái của anh!</p>
+						<p class="say"> </p>
+						<p class="say">Anh thật sự không có quá nhiều lời hoa mỹ để dành tặng cho em trong ngày 20/10</p>
+						<p class="say">Chỉ mong rằng em luôn bình an, luôn yên vui và luôn hạnh phúc bên cạnh anh.</p>
+						<p class="say">Mãi yêu em và mãi bên cạnh em. </p>
+                        <p class="say">
+                            <p class="space"><img width="100px" height="100px" src="assets/image/tym.png" alt="">
+                        <p class="say" style="text-align: right;"><p class="space"></p> --Anh yêu của em--</p>
+			  
+                    </div>
+      </div>
+                </div>
+                <div id="clock-box">
+                  <div id="clock"></div>
+              </div>
+                <canvas id="canvas" width="1100" height="680"></canvas>
+            </div>
+            
+        </div>
+
+    <script>
+        $(document).ready(function(){
+             
+            const images = [
+                'assets/image/da-lat.jpg',
+                'assets/image/em-iu.jpg',
+                'assets/image/dalat.jpg',
+                'assets/image/sn.jpg',
+                'assets/image/choi.jpg'
+            ];
+
+            let index = 0;
+
+            $hint = $('.love_you').hide()
+            // Hàm bay ảnh
+            function flyImage(src) {
+                const $img = $('<img src="' + src + '" class="flying-img">');
+                $('.body').append($img);
+
+                const startX = Math.random() * window.innerWidth;
+                const startY = window.innerHeight + 100;
+
+                $img.css({
+                left: startX + 'px',
+                top: startY + 'px',
+                opacity: 0,
+                transform: 'scale(0.5)'
+                });
+
+                // Bay vào giữa
+                setTimeout(function() {
+                $img.css({
+                    opacity: 1,
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%) scale(1.5)'
+                });
+                }, 50);
+
+                // Biến mất sau 2 giây
+                setTimeout(function() {
+                $img.fadeOut(800, function() { $(this).remove(); });
+                }, 2000);
+            }
+
+            // Bắt đầu sau 1 giây
+            setTimeout(function() {
+                const interval = setInterval(function() {
+                flyImage(images[index]);
+                index++;
+
+                // Khi hết ảnh thì dừng và hiện hướng dẫn
+                if (index >= images.length) {
+                    clearInterval(interval);
+
+                    // Hiện dòng hướng dẫn sau 1s
+                    setTimeout(function() {
+                    $hint.show()
+                    }, 3000);
+                }
+                }, 1500); // 1.5 giây mỗi ảnh
+            }, 500);
+            // ================== TRÁI TIM ==================
+            var settings = { particles:{ length:500, duration:2, velocity:100, effect:-0.6, size:28 } };
+            window.stopHeart = false;
+
+            // ----- CLASS TRÁI TIM -----
+            function Point(x,y){ this.x=x||0; this.y=y||0; }
+            Point.prototype.clone=function(){ return new Point(this.x,this.y); }
+            Point.prototype.length=function(l){ if(l===undefined) return Math.sqrt(this.x*this.x+this.y*this.y); this.normalize(); this.x*=l; this.y*=l; return this;}
+            Point.prototype.normalize=function(){ var len=this.length(); this.x/=len; this.y/=len; return this; }
+
+            function Particle(){ this.position=new Point(); this.velocity=new Point(); this.acceleration=new Point(); this.age=0; }
+            Particle.prototype.initialize=function(x,y,dx,dy){
+                this.position.x=x; this.position.y=y;
+                this.velocity.x=dx; this.velocity.y=dy;
+                this.acceleration.x=dx*settings.particles.effect;
+                this.acceleration.y=dy*settings.particles.effect;
+                this.age=0;
+            }
+            Particle.prototype.update=function(dt){ this.position.x+=this.velocity.x*dt; this.position.y+=this.velocity.y*dt; this.velocity.x+=this.acceleration.x*dt; this.velocity.y+=this.acceleration.y*dt; this.age+=dt; }
+            Particle.prototype.draw=function(ctx,img){ var ease=function(t){return (--t)*t*t+1}; var size=img.width*ease(this.age/settings.particles.duration); ctx.globalAlpha=1-this.age/settings.particles.duration; ctx.drawImage(img,this.position.x-size/2,this.position.y-size/2,size,size); }
+
+            function ParticlePool(len){
+                this.particles=[];
+                for(var i=0;i<len;i++) this.particles.push(new Particle());
+                this.firstActive=0; this.firstFree=0; this.duration=settings.particles.duration;
+            }
+            ParticlePool.prototype.add=function(x,y,dx,dy){
+                this.particles[this.firstFree].initialize(x,y,dx,dy);
+                this.firstFree++; if(this.firstFree==this.particles.length) this.firstFree=0;
+                if(this.firstActive==this.firstFree){ this.firstActive++; if(this.firstActive==this.particles.length)this.firstActive=0; }
+            }
+            ParticlePool.prototype.update=function(dt){
+                var p=this.particles, firstActive=this.firstActive, firstFree=this.firstFree, duration=this.duration;
+                var i;
+                if(firstActive<firstFree){ for(i=firstActive;i<firstFree;i++) p[i].update(dt); }
+                if(firstFree<firstActive){ for(i=firstActive;i<p.length;i++) p[i].update(dt); for(i=0;i<firstFree;i++) p[i].update(dt); }
+                while(p[this.firstActive].age>=duration && this.firstActive!=this.firstFree){ this.firstActive++; if(this.firstActive==p.length)this.firstActive=0; }
+            }
+            ParticlePool.prototype.draw=function(ctx,img){
+                var p=this.particles, firstActive=this.firstActive, firstFree=this.firstFree, i;
+                if(firstActive<firstFree){ for(i=firstActive;i<firstFree;i++) p[i].draw(ctx,img); }
+                if(firstFree<firstActive){ for(i=firstActive;i<p.length;i++) p[i].draw(ctx,img); for(i=0;i<firstFree;i++) p[i].draw(ctx,img); }
+            }
+
+            function pointOnHeart(t){ return new Point(160*Math.pow(Math.sin(t),3), 130*Math.cos(t)-50*Math.cos(2*t)-20*Math.cos(3*t)-10*Math.cos(4*t)+25); }
+
+            (function(canvas){
+                if(!canvas||!canvas.getContext) return;
+                var ctx=canvas.getContext('2d'), particles=new ParticlePool(settings.particles.length), particleRate=settings.particles.length/settings.particles.duration, time;
+
+                var image=(function(){
+                    var c=document.createElement('canvas'), ctx2=c.getContext('2d');
+                    c.width=settings.particles.size; c.height=settings.particles.size;
+                    ctx2.beginPath();
+                    var t=-Math.PI, p=pointOnHeart(t);
+                    ctx2.moveTo(settings.particles.size/2+p.x*settings.particles.size/350, settings.particles.size/2-p.y*settings.particles.size/350);
+                    while(t<Math.PI){ t+=0.01; p=pointOnHeart(t); ctx2.lineTo(settings.particles.size/2+p.x*settings.particles.size/350, settings.particles.size/2-p.y*settings.particles.size/350); }
+                    ctx2.closePath(); ctx2.fillStyle="#ffc0cb"; ctx2.fill();
+                    var img=new Image(); img.src=c.toDataURL(); return img;
+                })();
+
+                function renderHeart(){
+                    requestAnimationFrame(renderHeart);
+                    if(window.stopHeart) return;
+                    var newTime=new Date().getTime()/1000, deltaTime=newTime-(time||newTime); time=newTime;
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    var amount=particleRate*deltaTime;
+                    for(var i=0;i<amount;i++){
+                        var pos=pointOnHeart(Math.PI-2*Math.PI*Math.random());
+                        var dir=pos.clone().length(settings.particles.velocity);
+                        particles.add(canvas.width/2+pos.x, canvas.height/2-pos.y, dir.x, -dir.y);
+                    }
+                    particles.update(deltaTime);
+                    particles.draw(ctx,image);
+                }
+
+                function onResize(){ canvas.width=canvas.clientWidth; canvas.height=canvas.clientHeight; }
+                window.onresize=onResize; onResize(); renderHeart();
+            })(document.getElementById('lovexf'));
+
+            // ================== CLICK CHUYỂN CÂY ==================
+            $('.love_you').on('click', function(){
+                window.stopHeart = true;
+                $('#lovexf').fadeOut(500, function(){
+                    setTimeout(function() {
+                        $('audio')
+                            .attr('src', 'assets/music/hanh-trinh-yeu-nhau.mp3')
+                            .trigger('play');
+                    }, 5000);
+                    $('.body').fadeOut(500, function(){
+                        $('#main').fadeIn(800, function(){ startLoveTree(); });
+                    });
+                });
+            });
+
+            // ================== TREE ==================
+            
+            function startLoveTree(){
+                var canvas = $('#canvas');
+                if(!canvas[0].getContext){ alert("Canvas không hỗ trợ"); return; }
+                var width=canvas.width(), height=canvas.height();
+                canvas.attr("width", width); canvas.attr("height", height);
+
+                var together=new Date(); together.setFullYear(2026, 0, 18); together.setHours(0,0,0,0);
+
+                // Tạo tree object (phải có tree.js & jscex.js)
+                var tree = new Tree(canvas[0], width, height, {
+                    seed: {x:width/2-20,color:"rgb(190,26,37)",scale:2},
+                    branch: [
+                        [535, 680, 570, 250, 500, 200, 30, 100, [
+                            [540, 500, 455, 417, 340, 400, 13, 100, [
+                                [450, 435, 434, 430, 394, 395, 2, 40]
+                            ]],
+                            [550, 445, 600, 356, 680, 345, 12, 100, [
+                                [578, 400, 648, 409, 661, 426, 3, 80]
+                            ]],
+                            [539, 281, 537, 248, 534, 217, 3, 40],
+                            [546, 397, 413, 247, 328, 244, 9, 80, [
+                                [427, 286, 383, 253, 371, 205, 2, 40],
+                                [498, 345, 435, 315, 395, 330, 4, 60]
+                            ]],
+                            [546, 357, 608, 252, 678, 221, 6, 100, [
+                                [590, 293, 646, 277, 648, 271, 2, 80]
+                            ]]
+                        ]]
+                    ],
+                    bloom:{num:700,width:1080,height:650},
+                    footer:{width:1200,height:5,speed:10}
+                });
+
+                var seed=tree.seed, foot=tree.footer, hold=1;
+
+                canvas.click(function(e){ 
+                    var offset=canvas.offset(), x=e.pageX-offset.left, y=e.pageY-offset.top; 
+                    if(seed.hover(x,y)){ hold=0; canvas.unbind("click mousemove").removeClass('hand'); } 
+                }).mousemove(function(e){ 
+                    var offset=canvas.offset(), x=e.pageX-offset.left, y=e.pageY-offset.top; 
+                    canvas.toggleClass('hand', seed.hover(x,y)); 
+                });
+
+                var seedAnimate=eval(Jscex.compile("async", function(){
+                    seed.draw();
+                    while(hold){ $await(Jscex.Async.sleep(10)); }
+                    while(seed.canScale()){ seed.scale(0.95); $await(Jscex.Async.sleep(10)); }
+                    while(seed.canMove()){ seed.move(0,2); foot.draw(); $await(Jscex.Async.sleep(10)); }
+                }));
+                var growAnimate=eval(Jscex.compile("async", function(){ do{ tree.grow(); $await(Jscex.Async.sleep(10)); } while(tree.canGrow()); }));
+                var flowAnimate=eval(Jscex.compile("async", function(){ do{ tree.flower(2); $await(Jscex.Async.sleep(10)); } while(tree.canFlower()); }));
+                var moveAnimate=eval(Jscex.compile("async", function(){
+                    tree.snapshot("p1",240,0,610,680); 
+                    while(tree.move("p1",500,0)){ foot.draw(); $await(Jscex.Async.sleep(10)); } 
+                    foot.draw(); tree.snapshot("p2",500,0,610,680); 
+                    canvas.parent().css("background","url("+tree.toDataURL('image/png')+")"); 
+                    canvas.css("background","#ffe"); $await(Jscex.Async.sleep(300)); canvas.css("background","none");
+                }));
+                var jumpAnimate=eval(Jscex.compile("async", function(){ while(true){ tree.ctx.clearRect(0,0,width,height); tree.jump(); foot.draw(); $await(Jscex.Async.sleep(25)); } }));
+                var textAnimate=eval(Jscex.compile("async", function(){ $("#code").show().typewriter(); $("#clock-box").fadeIn(500); while(true){ timeElapse(together); $await(Jscex.Async.sleep(1000)); } }));
+
+                var runAsync=eval(Jscex.compile("async", function(){ 
+                    $await(seedAnimate()); $await(growAnimate()); $await(flowAnimate()); $await(moveAnimate()); 
+                    textAnimate().start(); 
+                    $await(jumpAnimate());
+                }));
+                runAsync().start();
+            }
+
+        });
+        function timeElapse(together) {
+            var current = new Date();
+            var seconds = (together - current) / 1000;
+            if (seconds < 0) seconds = 0;
+
+            var days = Math.floor(seconds / (3600 * 24));
+            seconds %= 3600 * 24;
+            var hours = Math.floor(seconds / 3600);
+            seconds %= 3600;
+            var minutes = Math.floor(seconds / 60);
+            seconds = Math.floor(seconds % 60);
+
+            var result = "💞 Còn " + days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây 💞";
+            $("#clock").html(result);
+            }
+    </script>
+
+</body>
+</html>
