@@ -14,6 +14,7 @@
         <script type="text/javascript" src="./renxi/love.js" charset="utf-8"></script>
         <link rel="stylesheet" href="style.css">
         
+
 </head>
     <body>
         <audio autoplay="autoplay" >
@@ -30,7 +31,7 @@
                   <img class="gif-box-img" src="assets/image/200.gif" alt="1 year love">
                 </div>
 
-            <canvas id="lovexf"></canvas> 
+            <canvas id="lovexf" width="100%"></canvas> 
         </div>
         <div id="main">
             
@@ -113,19 +114,20 @@
                 });
 
                 // Bay vào giữa
-                setTimeout(function() {
-                $img.css({
-                    position: 'absolute',
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                    width: 'auto',
-                    height: 'auto',
-                    opacity: 1,
-                    left: '50%',
-                    top: '50%',
-                    transform: 'translate(-50%, -50%) scale(1.15)',
-                    transition: 'all 0.6s ease'
-                });
+               setTimeout(function() {
+                    $img.css({
+                        position: 'absolute',
+                        maxWidth: '85vw',
+                        maxHeight: '100dvh',
+                        width: 'auto',
+                        height: 'auto',
+                        objectFit: 'cover',
+                        opacity: 1,
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%) scale(1.15)',
+                        transition: 'all 0.6s ease'
+                    });
                 }, 50);
 
                 // Biến mất sau 2 giây
