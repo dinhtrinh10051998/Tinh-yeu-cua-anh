@@ -2,6 +2,10 @@
     padding: 0;
     margin: 0;
 }
+.flying-img {
+    object-fit: contain;
+    pointer-events: none;
+}
 #love-video {
   position: fixed;
   inset: 0;
@@ -156,6 +160,7 @@
     background-size: cover;
     width: 100%;
     height: 100vh;
+    overflow: hidden;
 }
 #main {
     display: none;

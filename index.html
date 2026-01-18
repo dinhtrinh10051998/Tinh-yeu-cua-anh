@@ -101,40 +101,43 @@
             // Hàm bay ảnh
             function flyImage(src) {
                 const $img = $('<img src="' + src + '" class="flying-img">');
-                $('.body').append($img);
+                $('body').append($img);
 
-                const startX = Math.random() * window.innerWidth;
-                const startY = window.innerHeight + 100;
-
+                // trạng thái ban đầu
                 $img.css({
-                left: startX + 'px',
-                top: startY + 'px',
-                opacity: 0,
-                transform: 'scale(0.5)'
+                    position: 'fixed',
+                    left: '50%',
+                    top: '50%',
+                    maxWidth: '100vw',
+                    maxHeight: '85vh',
+                    width: 'auto',
+                    height: 'auto',
+                    opacity: 0,
+                    transform: 'translate(-50%, -50%) scale(0.6)',
+                    willChange: 'transform, opacity',
+                    transition: 'transform 0.8s ease, opacity 0.8s ease'
                 });
 
-                // Bay vào giữa
-               setTimeout(function() {
+                // animate vào giữa
+                requestAnimationFrame(() => {
                     $img.css({
-                        position: 'absolute',
-                        maxWidth: '85vw',
-                        maxHeight: '100dvh',
-                        width: 'auto',
-                        height: 'auto',
-                        objectFit: 'cover',
                         opacity: 1,
-                        left: '50%',
-                        top: '50%',
-                        transform: 'translate(-50%, -50%) scale(1.15)',
-                        transition: 'all 0.6s ease'
+                        transform: 'translate(-50%, -50%) scale(1.05)'
                     });
-                }, 50);
+                });
 
-                // Biến mất sau 2 giây
-                setTimeout(function() {
-                $img.fadeOut(800, function() { $(this).remove(); });
-                }, 2000);
+                // fade out
+                setTimeout(() => {
+                    $img.css({
+                        opacity: 0,
+                        transform: 'translate(-50%, -50%) scale(0.95)'
+                    });
+                    setTimeout(() => $img.remove(), 800);
+                }, 1600);
             }
+
+
+
 
             // Bắt đầu sau 1 giây
             setTimeout(function() {
