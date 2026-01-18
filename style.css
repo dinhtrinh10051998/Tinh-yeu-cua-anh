@@ -2,6 +2,130 @@
     padding: 0;
     margin: 0;
 }
+#love-video {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.9);
+  transition: all 1.2s ease;
+  z-index: 999;
+}
+
+#love-video video {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(255, 0, 100, 0.4);
+}
+
+#love-video.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.tap-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  z-index: 10;
+  pointer-events: none;
+  animation: fadeIn 1.2s ease;
+}
+
+.sound-icon {
+  font-size: 42px;
+  animation: pulse 1.4s infinite;
+}
+
+.tap-text {
+  font-size: 14px;
+  opacity: 0.85;
+  margin-top: 6px;
+}
+
+/* vòng sóng */
+.tap-ripple {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  transform: translateX(-50%);
+  animation: ripple 1.6s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 0.6; }
+  50%  { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+@keyframes ripple {
+  0%   { transform: translateX(-50%) scale(0.6); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1.4); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.gif-box {
+    position: absolute;
+    left: 47%;
+    top: 50%;
+}
+.gif-box-img {
+   width: 80px;
+}
+.love_you {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ff4d6d;
+  text-align: center;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  animation: heartbeat 2s infinite;
+  text-shadow: 0 0 8px rgba(255, 77, 109, 0.5);
+}
+
+/* Nhịp tim nhẹ */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* Khi hover */
+.love_you:hover {
+  color: #ff1e56;
+  text-shadow: 0 0 15px rgba(255, 30, 86, 0.8);
+}
+
+@keyframes fly {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.5);
+  }
+}
 /* Trái tim ở giữa */
   .heart-center {
     position: fixed;

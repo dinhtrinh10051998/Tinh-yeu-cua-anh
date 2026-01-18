@@ -20,8 +20,17 @@
         <audio autoplay="autoplay" >
           <source src="assets/music/heartbeat.mp3" type="audio/mp3" />
         </audio>
-        <div class="body">
-            <p class="love_you">💖 Click vào để bắt đầu 💖</p>
+        <div class="body" style = "overflow: hidden;">
+
+                <p class="love_you">
+                    ❤️ Mở ra 1 năm yêu thương
+                    <br>
+                    của chúng ta ❤️
+                    </p>
+                <div class="gif-box">
+                  <img class="gif-box-img" src="assets/image/200.gif" alt="1 year love">
+                </div>
+
             <canvas id="lovexf"></canvas> 
         </div>
         <div id="main">
@@ -32,15 +41,26 @@
 			      <div>
                         <p class="say">Xin chào cô gái của anh!</p>
 						<p class="say"> </p>
-						<p class="say">Anh thật sự không có quá nhiều lời hoa mỹ để dành tặng cho em trong ngày 20/10</p>
-						<p class="say">Chỉ mong rằng em luôn bình an, luôn yên vui và luôn hạnh phúc bên cạnh anh.</p>
-						<p class="say">Mãi yêu em và mãi bên cạnh em. </p>
+						<p class="say">Vậy là mình đã cùng nhau đi qua 1 năm yêu thương – không quá dài, nhưng đủ để anh hiểu rằng em là điều tuyệt vời nhất mà anh có được.</p>
+						<p class="say">Anh không cần những lời hoa mỹ, chỉ mong rằng trong từng ngày phía trước, em luôn bình an, yên vui và hạnh phúc khi có anh ở bên.</p>
+						<p class="say">Cảm ơn em vì đã đến, đã ở lại và cùng anh viết nên hành trình này. </p>
+                        <p class="say">Mãi yêu em – và vẫn sẽ luôn ở cạnh em, không chỉ 1 năm mà là thật lâu về sau.</p>
                         <p class="say">
                             <p class="space"><img width="100px" height="100px" src="assets/image/tym.png" alt="">
                         <p class="say" style="text-align: right;"><p class="space"></p> --Anh yêu của em--</p>
 			  
                     </div>
-      </div>
+      </div>    <!-- VIDEO -->
+                <div id="love-video">
+                    <video autoplay muted playsinline>
+                    <source src="assets/music/lv_1.mp4" type="video/mp4">
+                    </video>
+                    <div class="tap-hint">
+                    <div class="tap-ripple"></div>
+                    <div class="sound-icon">🔊</div>
+                    <div class="tap-text">Chạm để gửi em chút iu thương ❤️</div>
+                    </div>
+                </div>
                 </div>
                 <div id="clock-box">
                   <div id="clock"></div>
@@ -52,18 +72,32 @@
 
     <script>
         $(document).ready(function(){
-             
+
+            document.querySelector('.love_you').addEventListener('click', function(e) {
+                    for (let i = 0; i < 12; i++) {
+                        const heart = document.createElement('span');
+                        heart.innerHTML = '❤️';
+                        heart.style.position = 'absolute';
+                        heart.style.left = e.pageX + (Math.random() * 40 - 20) + 'px';
+                        heart.style.top = e.pageY + 'px';
+                        heart.style.fontSize = '18px';
+                        heart.style.animation = 'fly 1.2s ease-out forwards';
+                        document.body.appendChild(heart);
+
+                        setTimeout(() => heart.remove(), 1200);
+                    }
+                    });
             const images = [
                 'assets/image/da-lat.jpg',
-                'assets/image/em-iu.jpg',
-                'assets/image/dalat.jpg',
+                'assets/image/honson.jpg',
+                'assets/image/tet.jpg',
                 'assets/image/sn.jpg',
-                'assets/image/choi.jpg'
+                'assets/image/hanoi.jpg'
             ];
 
             let index = 0;
 
-            $hint = $('.love_you').hide()
+            $hint = $('.love_you,.gif-box').hide()
             // Hàm bay ảnh
             function flyImage(src) {
                 const $img = $('<img src="' + src + '" class="flying-img">');
@@ -82,10 +116,16 @@
                 // Bay vào giữa
                 setTimeout(function() {
                 $img.css({
+                    position: 'absolute',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: 'auto',
+                    height: 'auto',
                     opacity: 1,
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%) scale(1.5)'
+                    transform: 'translate(-50%, -50%) scale(1.15)',
+                    transition: 'all 0.6s ease'
                 });
                 }, 50);
 
@@ -292,8 +332,64 @@
             seconds = Math.floor(seconds % 60);
 
             var result = "💞 Còn " + days + " ngày " + hours + " giờ " + minutes + " phút " + seconds + " giây 💞";
+            var result = "💞 Hành trình tròn 1 năm 💞"
             $("#clock").html(result);
             }
+
+        (function () {
+        const el = document.getElementById('code');
+        if (!el) return;
+
+        let lastLength = el.innerText.length;
+        let stableTimer = null;
+        let done = false;
+
+        const observer = new MutationObserver(() => {
+            if (done) return;
+
+            const currentLength = el.innerText.length;
+
+            // Nếu độ dài KHÔNG tăng nữa
+            if (currentLength === lastLength) {
+            clearTimeout(stableTimer);
+            stableTimer = setTimeout(() => {
+                done = true;
+                observer.disconnect();
+
+                // ✅ CHỮ THỰC SỰ XONG → HIỆN VIDEO
+                const videoBox = document.getElementById('love-video');
+                const video = videoBox.querySelector('video');
+
+                videoBox.classList.add('show');
+
+                // autoplay an toàn
+                video.muted = true;
+                video.play().catch(() => {});
+
+                // click để bật tiếng
+                videoBox.addEventListener('click', () => {
+                video.muted = false;
+                video.volume = 0.8;
+                video.play();
+                // ❌ xoá hint sau khi click
+                    const hint = videoBox.querySelector('.tap-hint');
+                    if (hint) hint.remove();
+                });
+
+            }, 1200);
+            } else {
+            lastLength = currentLength;
+            }
+        });
+
+        observer.observe(el, {
+            childList: true,
+            characterData: true,
+            subtree: true
+        });
+        })();
+
+
     </script>
 
 </body>
